@@ -8,7 +8,7 @@
 </head>
 <body>
     <div ng-app="blocitoff" ng-controller="Task.controller">
-      <ul class="chatbox">
+      <ul>
         <li ng-repeat="task in tasks">{{ task.content }}</li>
       </ul>
       <form ng-submit="addTask()">
