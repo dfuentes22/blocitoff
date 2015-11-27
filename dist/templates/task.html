@@ -1,7 +1,9 @@
-
-    <div>
-        <form ng-submit="addTask()">
-            <input type="text" placeholder="What's your task?" ng-model="task">
-            <input type="submit">
-        </form>
+    <div ng-controller="Task.controller">
+      <ul>
+        <li ng-repeat="task in tasks">{{ task.content }}</li>
+      </ul>
+      <form ng-submit="addTask()">
+        <input type="text" ng-model="task">
+        <input type="submit" value="Add Task">
+      </form>
     </div>

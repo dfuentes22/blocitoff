@@ -1,7 +1,22 @@
-// define our app and dependencies (remember to include firebase!)
+// define our app and dependencies
 var app = angular.module("blocitoff", ["firebase", "ui.router"]);
 
-// this factory returns a synchronized array of chat messages
+app.config(function($stateProvider, $locationProvider) {
+    
+    $locationProvider.html5Mode({
+    enabled: true,
+    requireBase: false
+    });
+    
+    $stateProvider
+        .state('task', {
+            url: '/',
+            controller: 'Task.controller',
+            templateUrl: '/templates/task.html'
+        })
+});
+
+// this factory returns a synchronized array of tasks
 app.factory("taskList", ["$firebaseArray",
   function($firebaseArray) {
     // create a reference to the database location where we will store our data
@@ -13,13 +28,13 @@ app.factory("taskList", ["$firebaseArray",
 ]);
 
 app.controller("Task.controller", ["$scope", "taskList",
-  // we pass our new chatMessages factory into the controller
+  // pass new taskList factory into the controller
   function($scope, taskList) {
 
-    // we add chatMessages array to the scope to be used in our ng-repeat
+    // we add taskList array to the scope to be used in our ng-repeat
     $scope.tasks = taskList;
 
-    // a method to create new messages; called by ng-submit
+    // a method to create new taks; called by ng-submit
     $scope.addTask = function() {
       // calling $add on a synchronized array is like Array.push(),
       // except that it saves the changes to our database!
@@ -27,34 +42,17 @@ app.controller("Task.controller", ["$scope", "taskList",
         content: $scope.task
       });
 
-      // reset the message input
+      // reset the task input
       $scope.task = "";
     };
 
-    // if the messages are empty, add something for fun!
+    // if the messages are empty, do nothing
     $scope.tasks.$loaded(function() {
       if ($scope.tasks.length === 0) {
-        $scope.tasks.$add({
-          content: "Enter a task!"
-        });
+          return
       }
     });
   }
 ]);
 
-// breaking the program when I try ui-router
-/*
-blocitoff.config(function($stateProvider, $locationProvider) {
-    
-    $locationProvider.html5Mode({
-    enabled: true,
-    requireBase: false
-    });
-    
-    $stateProvider
-        .state('task', {
-            url: '/task',
-            controller: 'Task.controller',
-            templateUrl: '/templates/task.html'
-        })
-});*/
+
