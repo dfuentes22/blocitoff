@@ -1,5 +1,5 @@
 // define our app and dependencies (remember to include firebase!)
-var app = angular.module("blocitoff", ["firebase"]);
+var app = angular.module("blocitoff", ["firebase", "ui.router"]);
 
 // this factory returns a synchronized array of chat messages
 app.factory("taskList", ["$firebaseArray",
