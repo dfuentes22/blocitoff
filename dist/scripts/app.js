@@ -38,7 +38,8 @@ app.controller("Task.controller", ["$scope", "taskList",
     $scope.addTask = function() {
         var newTask = {
             done: false,
-            text: $scope.taskText
+            text: $scope.taskText,
+            time: Firebase.ServerValue.TIMESTAMP
         };
         $scope.tasks.$add(newTask);
         
