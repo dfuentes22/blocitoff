@@ -8,6 +8,13 @@
         <a href="" ng-click="move($index, 'up')"><span class="glyphicon glyphicon-arrow-up"</span></a>
         <a href="" ng-click="removeTask($index)"><span class="glyphicon glyphicon-remove-circle"</span></a> {{$index}}
     </div>
+    
+    <!--  Preview as you type  -->
+    <div class="list-group-item" ng-show="taskText">
+        <input type="checkbox" disabled="true">
+        <input type="text" disabled="true" placeholder="{{taskText}}">
+    </div>
+    
     <!--  Add task form  -->
     <form ng-submit="addTask()" class="list-group-item">
         <input type="text" ng-model="taskText">
