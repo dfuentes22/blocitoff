@@ -1,9 +1,16 @@
-    <div ng-controller="Task.controller">
-      <ul>
-        <li ng-repeat="task in tasks">{{ task.content }}</li>
-      </ul>
-      <form ng-submit="addTask()">
-        <input type="text" ng-model="task">
-        <input type="submit" value="Add Task">
-      </form>
+<h4 class="list-group-item title">Blocitoff Tasks</h4>
+<div ng-controller="Task.controller">
+    <!--  List of tasks  -->
+    <div ng-repeat="task in tasks" class="list-group-item">
+        <input type="checkbox" ng-model="task.done"/>
+        <input type="text" ng-model="task.text"/>
+        <a href="" ng-click="move($index, 'down')"><span class="glyphicon glyphicon-arrow-down"</span></a>
+        <a href="" ng-click="move($index, 'up')"><span class="glyphicon glyphicon-arrow-up"</span></a>
+        <a href="" ng-click="removeTask($index)"><span class="glyphicon glyphicon-remove-circle"</span></a> {{$index}}
     </div>
+    <!--  Add task form  -->
+    <form ng-submit="addTask()" class="list-group-item">
+        <input type="text" ng-model="taskText">
+        <input type="submit" value="Add Task">
+    </form>
+</div>

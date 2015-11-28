@@ -1,5 +1,5 @@
 // define our app and dependencies
-var app = angular.module("blocitoff", ["firebase", "ui.router"]);
+var app = angular.module("blocitoff", ["ui.router", "firebase"]);
 
 app.config(function($stateProvider, $locationProvider) {
     
@@ -30,29 +30,48 @@ app.factory("taskList", ["$firebaseArray",
 app.controller("Task.controller", ["$scope", "taskList",
   // pass new taskList factory into the controller
   function($scope, taskList) {
-
-    // we add taskList array to the scope to be used in our ng-repeat
+      
+    // add taskList array to the scope to be used in our ng-repeat
     $scope.tasks = taskList;
-
-    // a method to create new taks; called by ng-submit
+    
+    // Function to add new task
     $scope.addTask = function() {
-      // calling $add on a synchronized array is like Array.push(),
-      // except that it saves the changes to our database!
-      $scope.tasks.$add({
-        content: $scope.task
-      });
-
-      // reset the task input
-      $scope.task = "";
+        var newTask = {
+            done: false,
+            text: $scope.taskText
+        };
+        $scope.tasks.$add(newTask);
+        
+        $scope.taskText = '';
     };
+    
+    // Function to remove a task
+    $scope.removeTask = function(start) {
+        $scope.tasks.$remove(start, 1);
+    };
+    
+    //Function to move a task
+    $scope.move = function(index, direction) {
+        //if moving up
+        if (direction === "up") {
+            if(index === 0) {
+                return;    
+            }
+            index = index -1; 
+        }
+        //if moving down
+        if(direction === "down"){
+            if(index === $scope.tasks.length - 1){
+                return;   
+            }           
+        }
 
-    // if the messages are empty, do nothing
-    $scope.tasks.$loaded(function() {
-      if ($scope.tasks.length === 0) {
-          return
-      }
-    });
-  }
-]);
+        
+        var task = $scope.tasks[index];
+        $scope.tasks.splice(index + 2, 0, task);
+        $scope.tasks.splice(index, 1);
+            
+    };
+}]);
 
 
