@@ -38,7 +38,8 @@ app.controller("Task.controller", ["$scope", "taskList",
     $scope.addTask = function() {
         var newTask = {
             done: false,
-            text: $scope.taskText
+            text: $scope.taskText,
+            time: Firebase.ServerValue.TIMESTAMP
         };
         $scope.tasks.$add(newTask);
         
@@ -46,8 +47,8 @@ app.controller("Task.controller", ["$scope", "taskList",
     };
     
     // Function to remove a task
-    $scope.removeTask = function(start) {
-        $scope.tasks.$remove(start, 1);
+    $scope.removeTask = function(task) {
+        $scope.tasks.$remove(task);
     };
     
     //Function to move a task
@@ -69,9 +70,26 @@ app.controller("Task.controller", ["$scope", "taskList",
         
         var task = $scope.tasks[index];
         $scope.tasks.splice(index + 2, 0, task);
-        $scope.tasks.splice(index, 1);
-            
+        $scope.tasks.splice(index, 1);       
     };
+    
+    // Function to hide expired tasks
+    $scope.expiredTask = function(task) {
+        //Get time that a task was created
+        var initTime = task.time;
+        console.log(initTime);
+        //get time right now
+        var rightNow = new Date().getTime();
+        console.log(rightNow);
+        
+        //compare time + 7 days
+        if((rightNow - initTime) > 6000){
+            task.done = true;
+            $scope.tasks.$save(task);
+        }
+        //if initial time is greater hide the task 604800000
+    }
+      
 }]);
 
 
