@@ -14,6 +14,11 @@ app.config(function($stateProvider, $locationProvider) {
             controller: 'Task.controller',
             templateUrl: '/templates/task.html'
         })
+        .state('completed', {
+            url: '/completed',
+            controller: 'Completed.controller',
+            templateUrl: '/templates/completed.html'
+        })
 });
 
 // this factory returns a synchronized array of tasks
@@ -83,11 +88,42 @@ app.controller("Task.controller", ["$scope", "taskList",
         console.log(rightNow);
         
         //compare time + 7 days
+        if((rightNow - initTime) > 604800000){
+            task.done = true;
+            $scope.tasks.$save(task);
+        }
+    }
+      
+}]);
+
+app.controller("Completed.controller", ["$scope", "taskList",
+  // pass new taskList factory into the controller
+  function($scope, taskList) {
+      
+    // add taskList array to the scope to be used in our ng-repeat
+    $scope.tasks = taskList;
+    
+    
+    // Function to remove a task
+    $scope.removeTask = function(task) {
+        $scope.tasks.$remove(task);
+    };
+    
+    
+    // Function to hide expired tasks
+    $scope.expiredTask = function(task) {
+        //Get time that a task was created
+        var initTime = task.time;
+        console.log(initTime);
+        //get time right now
+        var rightNow = new Date().getTime();
+        console.log(rightNow);
+        
+        //compare time + 7 days (604800000)
         if((rightNow - initTime) > 6000){
             task.done = true;
             $scope.tasks.$save(task);
         }
-        //if initial time is greater hide the task 604800000
     }
       
 }]);
