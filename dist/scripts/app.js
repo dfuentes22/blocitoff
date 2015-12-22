@@ -38,12 +38,16 @@ app.controller("Task.controller", ["$scope", "taskList",
       
     // add taskList array to the scope to be used in our ng-repeat
     $scope.tasks = taskList;
+      
+    // order by
+    $scope.taskOrder = 'priority';
     
     // Function to add new task
     $scope.addTask = function() {
         var newTask = {
             done: false,
             text: $scope.taskText,
+            priority: $scope.priorityText,
             time: Firebase.ServerValue.TIMESTAMP
         };
         $scope.tasks.$add(newTask);
@@ -63,7 +67,7 @@ app.controller("Task.controller", ["$scope", "taskList",
             if(index === 0) {
                 return;    
             }
-            index = index -1; 
+            index = index -1;
         }
         //if moving down
         if(direction === "down"){
@@ -75,7 +79,8 @@ app.controller("Task.controller", ["$scope", "taskList",
         
         var task = $scope.tasks[index];
         $scope.tasks.splice(index + 2, 0, task);
-        $scope.tasks.splice(index, 1);       
+        $scope.tasks.splice(index, 1); 
+        $scope.tasks.$save(task);
     };
     
     // Function to hide expired tasks
@@ -87,11 +92,16 @@ app.controller("Task.controller", ["$scope", "taskList",
         var rightNow = new Date().getTime();
         console.log(rightNow);
         
-        //compare time + 7 days
+        //compare time + 7 days 604800000 6000
         if((rightNow - initTime) > 604800000){
             task.done = true;
             $scope.tasks.$save(task);
         }
+    }
+    // Function for checked tasks
+    $scope.checked = function(task) {
+        task.done = true;
+        $scope.tasks.$save(task);
     }
       
 }]);
@@ -108,23 +118,6 @@ app.controller("Completed.controller", ["$scope", "taskList",
     $scope.removeTask = function(task) {
         $scope.tasks.$remove(task);
     };
-    
-    
-    // Function to hide expired tasks
-    $scope.expiredTask = function(task) {
-        //Get time that a task was created
-        var initTime = task.time;
-        console.log(initTime);
-        //get time right now
-        var rightNow = new Date().getTime();
-        console.log(rightNow);
-        
-        //compare time + 7 days (604800000)
-        if((rightNow - initTime) > 6000){
-            task.done = true;
-            $scope.tasks.$save(task);
-        }
-    }
       
 }]);
 

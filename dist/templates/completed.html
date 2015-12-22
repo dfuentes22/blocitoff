@@ -1,9 +1,9 @@
 <h4 class="list-group-item title">Completed Blocitoff Tasks</h4>
 <div ng-controller="Completed.controller">
     <!--  List of Completed Tasks  -->
-    <div ng-repeat="task in tasks" class="list-group-item" ng-show="task.done === true" ng-init="expiredTask(task)">
+    <div ng-repeat="task in tasks" class="list-group-item" ng-show="task.done === true">
         <input type="checkbox" ng-model="task.done"/>
-        <input type="text" ng-model="task.text"/>
+        <label>{{task.text}}</label>
         <a href="" ng-click="removeTask($index)"><span class="glyphicon glyphicon-remove-circle"</span></a>
     </div>
     <!-- View Active Tasks-->

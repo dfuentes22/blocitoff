@@ -1,12 +1,12 @@
 <h4 class="list-group-item title">Blocitoff Tasks</h4>
 <div ng-controller="Task.controller">
     <!--  List of tasks  -->
-    <div ng-repeat="task in tasks" class="list-group-item" ng-show="task.done === false" ng-init="expiredTask(task)">
-        <input type="checkbox" ng-model="task.done"/>
-        <input type="text" ng-model="task.text"/>
+    <div ng-repeat="task in tasks | orderBy: 'priority'" class="list-group-item" ng-show="task.done === false" ng-init="expiredTask(task)">
+        <input type="checkbox" ng-model="task.done" ng-checked="checked($index)"/>
+        <label>{{task.text}}</label>
+        <label> Priority: {{task.priority}} </label>
         <a href="" ng-click="move($index, 'down')"><span class="glyphicon glyphicon-arrow-down"</span></a>
         <a href="" ng-click="move($index, 'up')"><span class="glyphicon glyphicon-arrow-up"</span></a>
-        <a href="" ng-click="removeTask($index)"><span class="glyphicon glyphicon-remove-circle"</span></a> {{$index}}
     </div>
     
     <!--  Preview as you type  -->
@@ -18,6 +18,12 @@
     <!--  Add task form  -->
     <form ng-submit="addTask()" class="list-group-item">
         <input type="text" ng-model="taskText">
+        <label> Priority: </label>
+        <select name="priority" ng-model="priorityText">
+            <option value="Low">Low</option>
+            <option value="Medium">Medium</option>
+            <option value="High">High</option>
+        </select>
         <input type="submit" value="Add Task">
     </form>
     <!--  View Old Tasks  -->
