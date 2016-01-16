@@ -1,7 +1,7 @@
 <h4 class="list-group-item title">Blocitoff Tasks</h4>
 <div ng-controller="Task.controller">
     <!--  List of tasks  -->
-    <div ng-repeat="task in tasks | orderBy: 'priority'" class="list-group-item" ng-show="task.done === false" ng-init="expiredTask(task)">
+    <div ng-repeat="task in tasks" class="list-group-item" ng-show="task.done === false" ng-init="expiredTask(task)">
         <input type="checkbox" ng-model="task.done" ng-checked="checked($index)"/>
         <label>{{task.text}}</label>
         <label> Priority: {{task.priority}} </label>
